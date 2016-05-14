@@ -1,0 +1,25 @@
+{
+  "name": "Reader",
+  "plural": "readers",
+  "base": "User",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "book": {
+      "type": "hasMany",
+      "model": "Books",
+      "foreignKey": ""
+    },
+    "marks": {
+      "type": "hasMany",
+      "model": "Mark",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
