@@ -7,9 +7,107 @@ html, body{
   margin:0;
 }
 .block{ display: block; }
-.wrapp{
+.appRoot{
   width:100%;
   min-height:100%;
 }
 a{text-decoration: none; color: #0072ff;}
 a:hover{/*text-decoration: underline; */color: #003e90;}
+
+.navigation {
+  width:90%;
+  height:50px;
+  padding:5px 5%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+  position: absolute;
+  background: #fff;
+  top:0;
+  left:0;
+  z-index: 999;
+}
+  .logotype{
+    height:30px;
+    float:left;
+    margin: 10px 30px 10px 0;
+  }
+  .btn-icons{
+    list-style: none;
+    margin:0;
+    padding:0;
+  }
+    .btn-icons li a{
+      display:block;
+      float:left;
+      width:38px;
+      height:38px;
+      margin:5px;
+      border-radius: 3px;
+    }
+    .btn-icons img{
+      width:100%;
+    }
+
+.content-wrap{
+  overflow: hidden;
+  height:100%;
+  width:100%;
+  position:absolute;
+  top:0;
+  left:0;
+}
+.content-wrap:before{
+  content:'';
+  display:block;
+  height:90px;
+  width:100%;
+}
+.columned-text {
+  -webkit-column-width: 400px;
+  -moz-column-width: 400px;
+  column-width: 400px;
+  -webkit-column-count: 2;
+  -moz-column-count: 2;
+  column-count: 2;
+  column-gap: 50px;
+  -webkit-column-gap: 50px;
+  -moz-column-gap: 50px;
+  -webkit-transition:transform 0.1s linear;
+  transition:transform 0.1s linear;
+  -moz-transition:transform 0.1s linear;
+}
+.content{
+  height:80%;
+  margin:0 5%;
+}
+  .prevPage, .nextPage{
+    position:absolute;
+    top:0;
+    width:10%;
+    height:100%;
+    z-index:900;
+    opacity: 0;
+    transition: all 0.2s linear;
+  }
+  .prevPage:hover,.nextPage:hover{
+    opacity: 1;
+  }
+  .prevPage:hover{
+    background: -moz-linear-gradient(left, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 100%);
+  }
+  .nextPage:hover{
+    background: -moz-linear-gradient(left, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,0.1) 100%);
+  }
+  .nextPage{right:0;}
+@media (max-width:900px){
+  .prevPage, .nextPage{
+    width:40%;
+    background: none;
+  }
+  .prevPage:hover,.nextPage:hover{
+    background: none;
+  }
+}
