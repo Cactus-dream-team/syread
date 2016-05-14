@@ -9,6 +9,10 @@
   "properties": {
     "metaData": {
       "type": "string",
+      "required": false
+    },
+    "name": {
+      "type": "string",
       "required": true
     },
     "url": {
