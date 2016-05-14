@@ -48,5 +48,9 @@
   "container": {
     "dataSource": "storage",
     "public": false
+  },
+  "Team": {
+    "dataSource": "postgre",
+    "public": true
   }
 }

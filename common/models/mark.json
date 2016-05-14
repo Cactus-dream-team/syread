@@ -20,18 +20,7 @@
     }
   },
   "validations": [],
-  "relations": {
-    "book": {
-      "type": "belongsTo",
-      "model": "Book",
-      "foreignKey": ""
-    },
-    "reader": {
-      "type": "belongsTo",
-      "model": "User",
-      "foreignKey": ""
-    }
-  },
+  "relations": {},
   "acls": [],
   "methods": {}
 }

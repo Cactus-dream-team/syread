@@ -8,7 +8,7 @@
   },
   "properties": {
     "metaData": {
-      "type": "string",
+      "type": "Object",
       "required": false
     },
     "name": {
@@ -22,11 +22,6 @@
   },
   "validations": [],
   "relations": {
-    "user": {
-      "type": "hasMany",
-      "model": "User",
-      "foreignKey": ""
-    },
     "marks": {
       "type": "hasMany",
       "model": "Mark",

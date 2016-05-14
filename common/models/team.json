@@ -1,27 +1,31 @@
 {
-  "name": "Reader",
-  "plural": "readers",
-  "base": "User",
+  "name": "Team",
+  "plural": "teams",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "settings": {
-      "type": "Object",
-      "required": false
+    "name": {
+      "type": "string"
     }
   },
   "validations": [],
   "relations": {
-    "book": {
+    "readers": {
       "type": "hasMany",
-      "model": "Book",
+      "model": "Reader",
       "foreignKey": ""
     },
     "marks": {
       "type": "hasMany",
       "model": "Mark",
+      "foreignKey": ""
+    },
+    "books": {
+      "type": "hasMany",
+      "model": "Book",
       "foreignKey": ""
     }
   },
