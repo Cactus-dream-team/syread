@@ -9,8 +9,6 @@ module.exports = function(Book) {
         var fileInfo = fileObj.files.files[0];
         Book.create({
           name: fileInfo.name,
-          type: fileInfo.type,
-          container: fileInfo.container,
           url: '/upload/common/'+fileInfo.name
         },function (err,obj) {
           if (err !== null) {
@@ -37,4 +35,29 @@ module.exports = function(Book) {
       http: {verb: 'post'}
     }
   );
+
+
+  Book.getMetaData = function(id, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
+      epub.on("end", function(){
+        cb(null, epub.metadata);
+      });
+      epub.parse();
+    });
+  }
+  Book.remoteMethod (
+      'getMetaData',
+      {
+        http: {path: '/getMetaData', verb: 'get'},
+        accepts: {arg: 'id', type: 'number', http: { source: 'query' } },
+        returns: {arg: 'meta', type: 'string'}
+      }
+    );
+
 };

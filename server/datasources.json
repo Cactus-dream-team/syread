@@ -1,6 +1,6 @@
 {
   "db": {
-    "name": "memory",
+    "name": "db",
     "connector": "memory"
   },
   "postgre": {
@@ -8,7 +8,7 @@
     "port": 5432,
     "database": "syread",
     "password": "kekeke",
-    "name": "db",
+    "name": "postgre",
     "user": "kek",
     "connector": "postgresql"
   },

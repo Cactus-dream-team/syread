@@ -14,39 +14,39 @@
     ]
   },
   "User": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": false
   },
   "AccessToken": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": false
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": false
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": false
   },
   "Book": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": true
   },
   "Reader": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": true
   },
   "Mark": {
-    "dataSource": "db",
+    "dataSource": "postgre",
     "public": true
   },
   "container": {
     "dataSource": "storage",
-    "public": true
+    "public": false
   }
 }
