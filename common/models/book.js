@@ -114,4 +114,33 @@ module.exports = function(Book) {
       returns: {arg: 'chapter', type: 'string'}
     }
   );
+
+  Book.getChapterRaw = function(id,name, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images/', './client/upload/chapter/');
+      epub.on("end", function(){
+        epub.getChapterRaw(name, function(error, text){
+          cb(null, error || text);
+        });
+      });
+      epub.parse();
+    });
+  };
+  Book.remoteMethod (
+    'getChapterRaw',
+    {
+      description: 'Get chapter by name',
+      http: {path: '/getChapterRaw', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', http: { source: 'query' } },
+        {arg: 'name', type: 'string', http: { source: 'query' } }
+      ],
+      returns: {arg: 'chapter', type: 'string'}
+    }
+  );
 };
