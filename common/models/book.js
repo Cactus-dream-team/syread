@@ -12,7 +12,7 @@ module.exports = function(Book) {
         epub.on("end", function(){
           Book.create({
             name: fileInfo.name,
-            metaData:JSON.stringify(epub.metadata),
+            metaData:epub.metadata,
             url: '/upload/common/'+fileInfo.name
           },function (err,obj) {
             if (err !== null) {
@@ -79,6 +79,7 @@ module.exports = function(Book) {
 
       var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
       epub.on("end", function(){
+        console.log(typeof epub.metadata)
         cb(null, epub.metadata);
       });
       epub.parse();
@@ -90,7 +91,7 @@ module.exports = function(Book) {
         description: 'Get meta data',
         http: {path: '/getMetaData', verb: 'get'},
         accepts: {arg: 'id', type: 'number', http: { source: 'query' } },
-        returns: {arg: 'meta', type: 'string'}
+        returns: {arg: 'meta', type: 'Object'}
       }
     );
 
@@ -115,6 +116,35 @@ module.exports = function(Book) {
     {
       description: 'Get chapter by name',
       http: {path: '/getChapter', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', http: { source: 'query' } },
+        {arg: 'name', type: 'string', http: { source: 'query' } }
+      ],
+      returns: {arg: 'chapter', type: 'string'}
+    }
+  );
+
+  Book.getChapterRaw = function(id,name, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images/', './client/upload/chapter/');
+      epub.on("end", function(){
+        epub.getChapterRaw(name, function(error, text){
+          cb(null, error || text);
+        });
+      });
+      epub.parse();
+    });
+  };
+  Book.remoteMethod (
+    'getChapterRaw',
+    {
+      description: 'Get chapter by name in raw',
+      http: {path: '/getChapterRaw', verb: 'get'},
       accepts: [
         {arg: 'id', type: 'number', http: { source: 'query' } },
         {arg: 'name', type: 'string', http: { source: 'query' } }
