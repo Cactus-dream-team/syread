@@ -37,6 +37,31 @@ module.exports = function(Book) {
   );
 
 
+  Book.getListChapter = function(id, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
+      epub.on("end", function(){
+        cb(null, epub.flow);
+      });
+      epub.parse();
+    });
+  };
+  Book.remoteMethod (
+    'getListChapter',
+    {
+      description: 'Get chapter list',
+      http: {path: '/getListChapter', verb: 'get'},
+      accepts: {arg: 'id', type: 'number', http: { source: 'query' } },
+      returns: {arg: 'chapters', type: 'string'}
+    }
+  );
+
+
   Book.getMetaData = function(id, cb) {
     var EPub = require("epub");
     Book.findById( id, function (err, instance) {
@@ -50,14 +75,43 @@ module.exports = function(Book) {
       });
       epub.parse();
     });
-  }
+  };
   Book.remoteMethod (
       'getMetaData',
       {
+        description: 'Get meta data',
         http: {path: '/getMetaData', verb: 'get'},
         accepts: {arg: 'id', type: 'number', http: { source: 'query' } },
         returns: {arg: 'meta', type: 'string'}
       }
     );
 
+  Book.getChapter = function(id,name, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images/', './client/upload/chapter/');
+      epub.on("end", function(){
+        epub.getChapter(name, function(error, text){
+          cb(null, error || text);
+        });
+      });
+      epub.parse();
+    });
+  };
+  Book.remoteMethod (
+    'getChapter',
+    {
+      description: 'Get chapter by name',
+      http: {path: '/getChapter', verb: 'get'},
+      accepts: [
+        {arg: 'id', type: 'number', http: { source: 'query' } },
+        {arg: 'name', type: 'string', http: { source: 'query' } }
+      ],
+      returns: {arg: 'chapter', type: 'string'}
+    }
+  );
 };
