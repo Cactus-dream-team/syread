@@ -1,6 +1,6 @@
 {
   "db": {
-    "name": "db",
+    "name": "memory",
     "connector": "memory"
   },
   "postgre": {
@@ -8,8 +8,15 @@
     "port": 5432,
     "database": "syread",
     "password": "kekeke",
-    "name": "postgre",
+    "name": "db",
     "user": "kek",
     "connector": "postgresql"
+  },
+  "storage": {
+    "name": "storage",
+    "connector": "loopback-component-storage",
+    "provider": "filesystem",
+    "root": "./client/upload",
+    "maxFileSize": "52428800"
   }
 }
