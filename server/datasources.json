@@ -2,5 +2,14 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "postgre": {
+    "host": "46.105.85.199",
+    "port": 5432,
+    "database": "syread",
+    "password": "kekeke",
+    "name": "postgre",
+    "user": "kek",
+    "connector": "postgresql"
   }
 }
