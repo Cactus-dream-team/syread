@@ -7,16 +7,23 @@ module.exports = function(Book) {
         cb(err);
       } else {
         var fileInfo = fileObj.files.files[0];
-        Book.create({
-          name: fileInfo.name,
-          url: '/upload/common/'+fileInfo.name
-        },function (err,obj) {
-          if (err !== null) {
-            cb(err);
-          } else {
-            cb(null, obj);
-          }
+        var EPub = require("epub");
+        var epub = new EPub('./client/upload/common/'+fileInfo.name, './client/upload/images', './client/upload/chapter');
+        epub.on("end", function(){
+          Book.create({
+            name: fileInfo.name,
+            metaData:JSON.stringify(epub.metadata),
+            url: '/upload/common/'+fileInfo.name
+          },function (err,obj) {
+            if (err !== null) {
+              cb(err);
+            } else {
+              cb(null, obj);
+            }
+          });
         });
+        epub.parse();
+
       }
     });
   };
@@ -69,6 +76,7 @@ module.exports = function(Book) {
         cb(null, "null");
         return;
       }
+
       var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
       epub.on("end", function(){
         cb(null, epub.metadata);
@@ -107,35 +115,6 @@ module.exports = function(Book) {
     {
       description: 'Get chapter by name',
       http: {path: '/getChapter', verb: 'get'},
-      accepts: [
-        {arg: 'id', type: 'number', http: { source: 'query' } },
-        {arg: 'name', type: 'string', http: { source: 'query' } }
-      ],
-      returns: {arg: 'chapter', type: 'string'}
-    }
-  );
-
-  Book.getChapterRaw = function(id,name, cb) {
-    var EPub = require("epub");
-    Book.findById( id, function (err, instance) {
-      if(!instance){
-        cb(null, "null");
-        return;
-      }
-      var epub = new EPub('./client'+instance.url, './client/upload/images/', './client/upload/chapter/');
-      epub.on("end", function(){
-        epub.getChapterRaw(name, function(error, text){
-          cb(null, error || text);
-        });
-      });
-      epub.parse();
-    });
-  };
-  Book.remoteMethod (
-    'getChapterRaw',
-    {
-      description: 'Get chapter by name',
-      http: {path: '/getChapterRaw', verb: 'get'},
       accepts: [
         {arg: 'id', type: 'number', http: { source: 'query' } },
         {arg: 'name', type: 'string', http: { source: 'query' } }
