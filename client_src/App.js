@@ -4,7 +4,7 @@ import ThunkMiddleware from 'redux-thunk'
 import { render } from 'react-dom'
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-//import Root from './components/Root'
+import Root from './components/Root'
 import './style.css'
 //import rootReducer from './reducers/index'
 /*
