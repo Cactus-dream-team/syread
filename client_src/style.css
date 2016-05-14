@@ -1,0 +1,15 @@
+html, body{
+  width:100%;
+  min-height:100%;
+  font-family: Tahoma, sans-serif;
+  font-size:14px;
+  padding:0;
+  margin:0;
+}
+.block{ display: block; }
+.wrapp{
+  width:100%;
+  min-height:100%;
+}
+a{text-decoration: none; color: #0072ff;}
+a:hover{/*text-decoration: underline; */color: #003e90;}
