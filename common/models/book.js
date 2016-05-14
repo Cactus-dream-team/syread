@@ -8,18 +8,28 @@ module.exports = function(Book) {
       } else {
         var fileInfo = fileObj.files.files[0];
         var EPub = require("epub");
-        var epub = new EPub('./client/upload/common/'+fileInfo.name, './client/upload/images', './client/upload/chapter');
+        var epub = new EPub('./client/upload/common/'+fileInfo.name, './client/upload/chapter', './client/upload/chapter');
         epub.on("end", function(){
-          Book.create({
-            name: fileInfo.name,
-            metaData:epub.metadata,
-            url: '/upload/common/'+fileInfo.name
-          },function (err,obj) {
-            if (err !== null) {
-              cb(err);
-            } else {
-              cb(null, obj);
-            }
+          epub.getImage("cover.jpg", function(error, img, mimeType){
+            //cb(null,img);
+            var fileName = './client/upload/images/'+fileInfo.name+'.jpg';
+            require('fs').writeFile(fileName, img, function(err) {
+              if (err) cb(null,err);
+
+              Book.create({
+                name: fileInfo.name,
+                metaData:epub.metadata,
+                url: '/upload/common/'+fileInfo.name,
+                cover:fileName
+              },function (err,obj) {
+                if (err !== null) {
+                  cb(err);
+                } else {
+                  cb(null, obj);
+                }
+              });
+              //cb(null,fileName);
+            });
           });
         });
         epub.parse();
@@ -68,6 +78,38 @@ module.exports = function(Book) {
     }
   );
 
+  Book.getCover = function(id, cb) {
+    var EPub = require("epub");
+    Book.findById( id, function (err, instance) {
+      if(!instance){
+        cb(null, "null");
+        return;
+      }
+      var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
+      epub.on("end", function(){
+        epub.getImage("cover.jpg", function(error, img, mimeType){
+          //cb(null,img);
+          var fileName = './client/upload/images/'+instance.name+'.jpg';
+          require('fs').writeFile(fileName, img, function(err) {
+              if (err) throw err;
+            console.log('It\'s saved!');
+            cb(null,fileName);
+          });
+        });
+      });
+      epub.parse();
+    });
+  };
+  Book.remoteMethod (
+    'getCover',
+    {
+      description: 'Get cover image',
+      http: {path: '/getCover', verb: 'get'},
+      accepts: {arg: 'id', type: 'number', http: { source: 'query' } },
+      returns: {arg: 'image', type: 'string'}
+    }
+  );
+
 
   Book.getMetaData = function(id, cb) {
     var EPub = require("epub");
@@ -79,7 +121,6 @@ module.exports = function(Book) {
 
       var epub = new EPub('./client'+instance.url, './client/upload/images', './client/upload/chapter');
       epub.on("end", function(){
-        console.log(typeof epub.metadata)
         cb(null, epub.metadata);
       });
       epub.parse();

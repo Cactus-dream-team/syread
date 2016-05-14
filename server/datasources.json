@@ -4,12 +4,12 @@
     "connector": "memory"
   },
   "postgre": {
-    "host": "46.105.85.199",
+    "host": "localhost",
     "port": 5432,
     "database": "syread",
-    "password": "kekeke",
+    "password": "12321",
     "name": "postgre",
-    "user": "kek",
+    "user": "syread",
     "connector": "postgresql"
   },
   "storage": {

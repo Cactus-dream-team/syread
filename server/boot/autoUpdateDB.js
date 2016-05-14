@@ -3,4 +3,5 @@
  */
 module.exports = function (server) {
   server.dataSources.postgre.autoupdate();
+  //server.dataSources.postgre.automigrate();
 }

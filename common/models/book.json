@@ -18,6 +18,10 @@
     "url": {
       "type": "string",
       "required": true
+    },
+    "cover": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
