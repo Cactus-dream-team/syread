@@ -19,6 +19,7 @@ module.exports = function(Book) {
               Book.create({
                 name: fileInfo.name,
                 metaData:epub.metadata,
+                chapters:epub.flow,
                 url: '/upload/common/'+fileInfo.name,
                 cover:fileName
               },function (err,obj) {
@@ -110,7 +111,6 @@ module.exports = function(Book) {
     }
   );
 
-
   Book.getMetaData = function(id, cb) {
     var EPub = require("epub");
     Book.findById( id, function (err, instance) {
@@ -181,6 +181,7 @@ module.exports = function(Book) {
       epub.parse();
     });
   };
+
   Book.remoteMethod (
     'getChapterRaw',
     {

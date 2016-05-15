@@ -11,6 +11,10 @@
       "type": "Object",
       "required": false
     },
+    "chapters": {
+      "type": "Object",
+      "required": false
+    },
     "name": {
       "type": "string",
       "required": true
