@@ -4,11 +4,27 @@ import fetchChapter from '../actions/pagesActions'
 import Pages from '../components/Pages'
 
 class ChapterWrap extends React.Component{
+    constructor(props){
+        super(props);
+        this.nextChapter = this.nextChapter.bind(this);
+        this.prevChapter = this.prevChapter.bind(this);
+        this.i = 1;
+    }
     componentWillMount(){
         const { dispatch } = this.props;
-        console.log(this.props);
-        dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[5].id));
+        dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[this.i].id));
     }
+
+    nextChapter(){
+        const { dispatch } = this.props;
+        dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[++this.i].id));
+    }
+    prevChapter(){
+      const { dispatch } = this.props;
+      if(this.i>1)
+        dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[--this.i].id));
+    }
+
     render(){
         const {pages} = this.props;
         if( pages.isFetching) {
@@ -17,7 +33,7 @@ class ChapterWrap extends React.Component{
             );
         }
         return(
-          <Pages chapter={pages.chapter}/>
+          <Pages chapter={pages.chapter} next={this.nextChapter} prev={this.prevChapter}/>
         );
     }
 }

@@ -1,6 +1,7 @@
 const pages = (state = {
   isFetching: false,
-  chapter: null
+  chapter: null,
+  chapterNum: 0
 }, action) => {
   switch(action.type){
     case 'REQUEST_CHAPTER':
@@ -10,7 +11,8 @@ const pages = (state = {
     case 'RECEIVE_CHAPTER':
       return Object.assign({},state,{
         isFetching: false,
-        chapter: action.chapter
+        chapter: action.chapter,
+        chapterNum: action.chNum
       });
     default:
       return state;
