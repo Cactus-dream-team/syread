@@ -23,6 +23,10 @@
       "type": "string",
       "required": true
     },
+    "lastMark": {
+      "type": "number",
+      "required": false
+    },
     "cover": {
       "type": "string",
       "required": true
