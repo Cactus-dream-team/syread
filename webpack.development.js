@@ -17,6 +17,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(files.outputPath),
+    publicPath: "/",
     filename: files.outputFilename
   },
   module: {
@@ -29,11 +30,18 @@ module.exports = {
       {
         test: /\.css$/,
         loaders: ['style', 'css']
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|woff)$/,
+        loader: 'url-loader?limit=8192'
       }
     ]
   },
   plugins: [
     new HtmlPlugin({ template: files.htmlTemplate }),
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+  resolve: {
+    extensions: ['', '.js', '.jsx']
+  }
 };
