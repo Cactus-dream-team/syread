@@ -6,8 +6,8 @@ import { browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import Root from './components/Root'
 import './style.css'
-//import rootReducer from './reducers/index'
-/*
+import rootReducer from './reducers/index'
+
 const store = createStore(combineReducers({
     app:rootReducer,
     routing:routerReducer
@@ -17,9 +17,8 @@ const store = createStore(combineReducers({
   )
 );
 const history = syncHistoryWithStore(browserHistory, store);
- <Root store={store} history={history} />
-*/
+
 render(
-<h1>hi</h1>,
+  <Root store={store} history={history} />,
   document.getElementById('appRoot')
 );

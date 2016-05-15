@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta charset="UTF-8">
+  <title>SyRead</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="appRoot">
+  <div class="app">
+    <header class="navigation">
+      <img class="logotype" src='img/syread.png' />
+      <nav class="btn-icons">
+        <li><a href="#"><img src='img/home.png' /></a></li>
+        <li><a href="#"><img src='img/aa.png' /></a></li>
+        <li><a href="#"><img src='img/mark.png' /></a></li>
+      </nav>
+    </header>
+    <div class="content-wrap">
+
+    </div>
+  </div>
+</div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script>
+  var bookItem = `<div class="book-item"><a href="#{id}"><img src={img}></a><div><h3><a href="#{id}">{title}</a></h3><p>Author: {creator} </p></div></div>`;
+
+  var loc = '/';
+  var storedData;
+
+  function locationCh(){
+    if(loc == '/'){
+      $.get( "http://46.105.85.199:3000/api/books", function( data ) {
+        renderList(data);
+      }, "json" );
+    }
+    else if(/books\/\d*/.test(loc)){
+      var id = +loc.split('/')[1];
+      $.get( "http://46.105.85.199:3000/api/books/"+id, function( data ) {
+        renderList(data);
+      }, "json" );
+    }
+  }
+  function renderList(data){
+      $('.content-wrap').html('<div class="book-list"></div>');
+      data.forEach(function(book){
+        var item = bookItem.replace(/\{id\}/g,book.id).replace('{img}',book.cover.replace('./client/','http://46.105.85.199:3000/'))
+          .replace('{title}',book.metaData.title).replace('{creator}',book.metaData.creator);
+        $('.book-list').append(item);
+        $('.book-list a').click(function(e){
+          loc = 'books/'+ e.target.href.split('#')[1];
+        });
+      });
+  }
+  function renderBook(data){
+
+  }
+  locationCh();
+
+
+  if(document.querySelector('.columned-text')) {
+    var setGap = function () {
+      document.querySelector('.columned-text').style.webkitColumnGap = window.outerWidth * 0.05 + 'px';
+      document.querySelector('.columned-text').style.mozColumnGap = window.outerWidth * 0.05 + 'px';
+      document.querySelector('.columned-text').style.columnGap = window.outerWidth * 0.05 + 'px';
+    };
+    var pagination = (function () {
+      var pageN = 0;
+      var swipe = function () {
+        document.querySelector('.columned-text').style.transform = 'translate(' + -pageN * window.outerWidth * 0.95 + 'px)';
+      };
+      return {
+        nextPage: function () {
+          return function () {
+            if (pageN > 0) pageN--;
+            swipe();
+          }
+        },
+        prevPage: function () {
+          return function () {
+            var offset = document.querySelector('.columned-text.content > *:last-of-type').offsetLeft;
+            if ((pageN + 1) * window.outerWidth * 0.95 < offset) pageN++;
+            swipe();
+          }
+        }
+      }
+    })();
+    var nP = pagination.nextPage();
+    var pP = pagination.prevPage();
+
+    setGap();
+    window.addEventListener('resize', setGap);
+    document.querySelector('.prevPage').addEventListener('click', nP);
+    document.querySelector('.nextPage').addEventListener('click', pP);
+  }
+</script>
+</html>
