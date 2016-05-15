@@ -48,7 +48,8 @@ a:hover{/*text-decoration: underline; */color: #003e90;}
     }
 
 .content-wrap{
-  overflow: hidden;
+  overflow-x:hidden;
+  overflow-y: auto;
   height:100%;
   width:100%;
   position:absolute;

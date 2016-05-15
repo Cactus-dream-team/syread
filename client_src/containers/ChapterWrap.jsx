@@ -8,13 +8,14 @@ class ChapterWrap extends React.Component{
         super(props);
         this.nextChapter = this.nextChapter.bind(this);
         this.prevChapter = this.prevChapter.bind(this);
-        this.i = 1;
+        this.lM = this.props.lastMark ? this.props.lastMark.split(":"):[1,0];
+
+        this.i = this.lM[0];
     }
     componentWillMount(){
         const { dispatch } = this.props;
         dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[this.i].id));
     }
-
     nextChapter(){
         const { dispatch } = this.props;
         dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[++this.i].id));
@@ -33,7 +34,7 @@ class ChapterWrap extends React.Component{
             );
         }
         return(
-          <Pages chapter={pages.chapter} next={this.nextChapter} prev={this.prevChapter}/>
+          <Pages chapter={pages.chapter} lastMark={this.lM[1]} next={this.nextChapter} prev={this.prevChapter} chId={this.props.item.chapters[this.i].id} bid={this.props.item.id}/>
         );
     }
 }
