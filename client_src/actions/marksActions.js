@@ -2,20 +2,20 @@ import 'babel-polyfill'
 
 function requestMark(){
   return {
-    type:'REQUEST_MARK'
+    type:'REQUEST_MARKS'
   }
 }
-function receiveMark(text,chId){
-  return {
-    type: 'RECEIVE_MARK',
-    mark: text.mark
+function receiveMark(json){
+   return {
+    type: 'RECEIVE_MARKS',
+    lastMark: json[0]
   }
 }
-export default function fetchMark(bookId,chId){
+export default function fetchMarks(id){
   return dispatch => {
     dispatch(requestMark());
-    return fetch(`http://46.105.85.199:3000/api/marks/`)
+    return fetch(`http://46.105.85.199:3000/api/books/${id}/marks?filter[order]=id%20DESC&filter[limit]=1`)
       .then(response => response.json())
-      .then(json => dispatch(receiveMark(json,chId)))
+      .then(json => dispatch(receiveMark(json)))
   }
 }

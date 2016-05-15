@@ -1,19 +1,21 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import fetchBooksData from '../actions/booksActions'
+import fetchMarks from '../actions/marksActions'
 import ChapterWrap from './ChapterWrap'
 
 class BookPage extends React.Component{
     componentWillMount(){
       const { dispatch } = this.props;
       dispatch(fetchBooksData());
+      dispatch(fetchMarks(this.props.id));
     }
     extractCurrent(list, id){
       return list.filter(item => item['id'] == id)[0];
     }
     render(){
-        const {books} = this.props;
-        if( books.isFetching ||  books.items.length == 0) {
+        const {books, marks} = this.props;
+        if( books.isFetching ||  books.items.length == 0 || marks.isFetching) {
             return (
                 <div className="wait-handler centered container">
                     <h3>Fetching data...</h3>
@@ -21,8 +23,7 @@ class BookPage extends React.Component{
             );
         }
         return(
-              <ChapterWrap item={this.extractCurrent(this.props.books.items,this.props.id)}/>
-
+              <ChapterWrap item={this.extractCurrent(this.props.books.items,this.props.id)} mark={this.props.marks.mark}/>
         );
     }
 }
@@ -31,7 +32,8 @@ class BookPage extends React.Component{
 const mapStateToProps = (state, ownProps) => {
     return{
         id: +ownProps.params.id,
-        books: state.app.books
+        books: state.app.books,
+        marks: state.app.marks
     }
 };
 

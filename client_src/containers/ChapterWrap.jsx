@@ -8,12 +8,16 @@ class ChapterWrap extends React.Component{
         super(props);
         this.nextChapter = this.nextChapter.bind(this);
         this.prevChapter = this.prevChapter.bind(this);
-        this.lM = this.props.lastMark ? this.props.lastMark.split(":"):[1,0];
 
-        this.i = this.lM[0];
+
     }
     componentWillMount(){
         const { dispatch } = this.props;
+
+        this.lM = this.props.mark ? this.props.mark.position.split(":") : [1,0];
+
+        this.i = !isNaN(this.lM[0]) ? this.lM[0] : 1;
+
         dispatch(fetchChapter(this.props.item.id, this.props.item.chapters[this.i].id));
     }
     nextChapter(){

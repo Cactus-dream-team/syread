@@ -18,8 +18,7 @@
         }
         else
           return false;
-      })
-      $.post( "http://46.105.85.199:3000/marks", { name: "John", time: "2pm" } );
+      });
     };
     return {
       getOffset:function(){

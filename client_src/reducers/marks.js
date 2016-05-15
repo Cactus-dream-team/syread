@@ -1,7 +1,6 @@
-const pages = (state = {
+const marks = (state = {
   isFetching: false,
-  marks: null,
-  marksNum: 0
+  marks: []
 }, action) => {
   switch(action.type){
     case 'REQUEST_MARKS':
@@ -11,11 +10,10 @@ const pages = (state = {
     case 'RECEIVE_MARKS':
       return Object.assign({},state,{
         isFetching: false,
-        marks: action.marks,
-        marksNum: action.chNum
+        mark: action.lastMark
       });
     default:
       return state;
   }
 };
-export default pages;
+export default marks;
