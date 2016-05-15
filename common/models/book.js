@@ -12,24 +12,26 @@ module.exports = function(Book) {
         epub.on("end", function(){
           epub.getImage("cover.jpg", function(error, img, mimeType){
             //cb(null,img);
-            var fileName = './client/upload/images/'+fileInfo.name+'.jpg';
-            require('fs').writeFile(fileName, img, function(err) {
-              if (err) cb(null,err);
-
-              Book.create({
-                name: fileInfo.name,
-                metaData:epub.metadata,
-                chapters:epub.flow,
-                url: '/upload/common/'+fileInfo.name,
-                cover:fileName
-              },function (err,obj) {
-                if (err !== null) {
-                  cb(err);
-                } else {
-                  cb(null, obj);
-                }
-              });
-              //cb(null,fileName);
+            var fileName
+            if(img){
+              fileName = './client/upload/images/'+fileInfo.name+'.jpg';
+              require('fs').writeFileSync(fileName, img);
+            }
+            else{
+              fileName = './client/upload/images/missing.jpg';
+            }
+            Book.create({
+              name: fileInfo.name,
+              metaData:epub.metadata,
+              chapters:epub.flow,
+              url: '/upload/common/'+fileInfo.name,
+              cover:fileName
+            },function (err,obj) {
+              if (err !== null) {
+                cb(err);
+              } else {
+                cb(null, obj);
+              }
             });
           });
         });
